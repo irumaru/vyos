@@ -1,0 +1,39 @@
+set interfaces ethernet eth0 address '192.168.150.41/24'
+set interfaces ethernet eth0 ipv6 address autoconf
+set interfaces ethernet eth1 address '192.168.171.1/24'
+set interfaces loopback lo
+set interfaces wireguard wg0 address '192.168.161.1/24'
+set interfaces wireguard wg0 description 'to-vyos-2'
+set interfaces wireguard wg0 peer to-wg1 address '2001:f71:b200:a51:440b:cfff:fe03:4cc6'
+set interfaces wireguard wg0 peer to-wg1 allowed-ips '192.168.0.0/16'
+set interfaces wireguard wg0 peer to-wg1 allowed-ips '224.0.0.5/32'
+set interfaces wireguard wg0 peer to-wg1 allowed-ips '224.0.0.6/32'
+set interfaces wireguard wg0 peer to-wg1 port '51820'
+set interfaces wireguard wg0 peer to-wg1 pubkey 'bQWZF+ojQCTrSoIWFjdUA7XrJbB6H3ZS1x3ZtQ0qcl8='
+set interfaces wireguard wg0 port '51820'
+set interfaces wireguard wg0 private-key 'nclab'
+set nat source rule 100 outbound-interface 'eth0'
+set nat source rule 100 source address '192.168.171.0/24'
+set nat source rule 100 translation address 'masquerade'
+set protocols ospf area 0 network '192.168.171.0/24'
+set protocols ospf area 0 network '192.168.161.0/24'
+set protocols ospf parameters router-id '192.168.171.1'
+set protocols static interface-route 192.168.172.0/24 next-hop-interface wg0 disable
+set protocols static route 0.0.0.0/0 next-hop 192.168.150.1
+set service ssh port '22'
+set system config-management commit-revisions '100'
+set system conntrack modules ftp
+set system conntrack modules h323
+set system conntrack modules nfs
+set system conntrack modules pptp
+set system conntrack modules sip
+set system conntrack modules sqlnet
+set system conntrack modules tftp
+set system console device ttyS0 speed '115200'
+set system host-name 'vyos-1'
+set system login user vyos authentication encrypted-password '$6$04jF7AlyLNvWJUtl$SFk5JKLuAfiPXsMF2nFJ/MrHMxxHOL/arHXOvPYOoWHcnT0fvgoU./xReC.g42nNqqaPhdpOorYLkVq4U/WIn.'
+set system ntp server time1.vyos.net
+set system ntp server time2.vyos.net
+set system ntp server time3.vyos.net
+set system syslog global facility all level 'info'
+set system syslog global facility protocols level 'debug'
